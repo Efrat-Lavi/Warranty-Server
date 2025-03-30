@@ -14,16 +14,36 @@ namespace Recipes.Service.Services
     public class S3Service : IS3Service
     {
         private readonly IAmazonS3 _s3Client;
-        
+        //private readonly AwsSettings _awsSettings;
         public S3Service(IConfiguration configuration)
         {
             var awsOptions = configuration.GetSection("AWS");
             var name = awsOptions["BucketName"];
-            var accessKey = Environment.GetEnvironmentVariable("AccessKey", EnvironmentVariableTarget.User);
-            var secretKey = Environment.GetEnvironmentVariable("SecretKey", EnvironmentVariableTarget.User);
-            var region = Environment.GetEnvironmentVariable("Region", EnvironmentVariableTarget.User);
+            var accessKey = Environment.GetEnvironmentVariable("AccessKey");
+            var secretKey = Environment.GetEnvironmentVariable("SecretKey");
+            var region = Environment.GetEnvironmentVariable("Region");
             _s3Client = new AmazonS3Client(accessKey, secretKey, Amazon.RegionEndpoint.GetBySystemName(region));
         }
+        //public S3Service(IConfiguration configuration)
+        //{
+        //    var awsOptions = configuration.GetSection("AWS");
+        //    var name = awsOptions["BucketName"];
+        //    var accessKey = Environment.GetEnvironmentVariable("AccessKey", EnvironmentVariableTarget.User);
+        //    var secretKey = Environment.GetEnvironmentVariable("SecretKey", EnvironmentVariableTarget.User);
+        //    var region = Environment.GetEnvironmentVariable("Region", EnvironmentVariableTarget.User);
+        //    _s3Client = new AmazonS3Client(accessKey, secretKey, Amazon.RegionEndpoint.GetBySystemName(region));
+        //}
+        //public S3Service(IConfiguration configuration)
+        //{
+        //    var awsOptions = configuration.GetSection("AWS");
+        //    var name = awsOptions["BucketName"];
+        //    var accessKey = awsOptions["AccessKey"];
+        //    var secretKey = awsOptions["SecretKey"];
+        //    var region = awsOptions["Region"];
+
+        //    _s3Client = new AmazonS3Client(accessKey, secretKey, Amazon.RegionEndpoint.GetBySystemName(region));
+        //}
+
         public async Task<string> GeneratePresignedUrlAsync(string fileName, string contentType)
         {
             var key = $"users/{fileName}"; // נתיב כולל תיקיה

@@ -1,3 +1,5 @@
+using Amazon.S3;
+using Amazon;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Warranty.API;
@@ -25,6 +27,16 @@ builder.Services.ConfigureServices();
 
 var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 Console.WriteLine($"Connection String: {connectionString}");
+
+//var awsSettings = new AwsSettings
+//{
+//    AccessKey = builder.Configuration["AWS_ACCESS_KEY"],
+//    SecretKey = builder.Configuration["AWS_SECRET_KEY"],
+//    Region = builder.Configuration["AWS_REGION"]
+//};
+
+//var s3Client = new AmazonS3Client(awsSettings.AccessKey, awsSettings.SecretKey, RegionEndpoint.GetBySystemName(awsSettings.Region));
+//builder.Services.AddSingleton<IAmazonS3>(s3Client);
 
 builder.AddJwtAuthentication();
 builder.AddJwtAuthorization();
