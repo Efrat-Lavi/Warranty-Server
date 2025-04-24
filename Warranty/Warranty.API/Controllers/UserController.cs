@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Warranty.API.PostModels;
 using Warranty.Core.DTOs;
 using Warranty.Core.Interfaces.Services;
@@ -57,9 +58,10 @@ namespace Warranty.API.Controllers
                 userDto = await _iService.AddUser(userDto);
                 return userDto == null ? NotFound() : Ok(userDto);
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
-                return StatusCode(500, $"Error occurred: {ex.Message}");
+                var innerMessage = ex.InnerException?.Message ?? ex.Message;
+                return StatusCode(500, $"Database error: {innerMessage}");
             }
         }
 

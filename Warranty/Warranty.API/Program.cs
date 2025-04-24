@@ -47,6 +47,7 @@ app.UseRouting();
 
 app.UseCors(CorsExtensions.MyAllowSpecificOrigins);
 
+
 app.UseAuthentication();
 
 app.UseAuthorization();
