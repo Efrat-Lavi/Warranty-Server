@@ -24,7 +24,7 @@ namespace Warranty.API.Controllers
             _mapper = mapper;
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
         [HttpGet]
         public async Task<ActionResult<List<RoleDto>>> Get()
         {
@@ -40,7 +40,7 @@ namespace Warranty.API.Controllers
             return role == null ? NotFound() : Ok(role);
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        //[Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<ActionResult<RoleDto>> Post([FromBody] RolePostModel rolePostModel)
         {

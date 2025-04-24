@@ -47,15 +47,30 @@ namespace Warranty.API.Controllers
             var user = await _iService.GetUserByEmail(email);
             return user == null ? NotFound() : Ok(user);
         }
-
         [Authorize(Policy = "UserOrAdmin")]
         [HttpPost]
         public async Task<ActionResult<UserDto>> Post([FromBody] UserPostModel userPostModel)
         {
-            var userDto = _mapper.Map<UserDto>(userPostModel);
-            userDto = await _iService.AddUser(userDto);
-            return userDto == null ? NotFound() : Ok(userDto);
+            try
+            {
+                var userDto = _mapper.Map<UserDto>(userPostModel);
+                userDto = await _iService.AddUser(userDto);
+                return userDto == null ? NotFound() : Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error occurred: {ex.Message}");
+            }
         }
+
+        //[Authorize(Policy = "UserOrAdmin")]
+        //[HttpPost]
+        //public async Task<ActionResult<UserDto>> Post([FromBody] UserPostModel userPostModel)
+        //{
+        //    var userDto = _mapper.Map<UserDto>(userPostModel);
+        //    userDto = await _iService.AddUser(userDto);
+        //    return userDto == null ? NotFound() : Ok(userDto);
+        //}
 
         [Authorize(Policy = "UserOrAdmin")]
         [HttpPut("{id}")]
