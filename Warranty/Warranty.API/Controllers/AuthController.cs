@@ -39,6 +39,28 @@ namespace Warranty.API.Controllers
             }
             return BadRequest(result.ErrorMessage);
         }
+
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
+        {
+            if (string.IsNullOrEmpty(request.Token))
+                return BadRequest("Token is required.");
+
+            var result = await _authService.LoginWithGoogleAsync(request.Token);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Data); // מחזיר טוקן משלך ללקוח
+            }
+
+            return Unauthorized(result.ErrorMessage);
+        }
+
+        public class GoogleLoginRequest
+        {
+            public string Token { get; set; }
+        }
+
     }
     public class LoginModel
     {

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CvSite.API", "CvSite.API.csproj", "{762423D8-497A-44FD-B94E-CA963B8D3EFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CvSite.Service", "..\CvSite.Service\CvSite.Service.csproj", "{1F241BCA-F13F-4E18-9266-858EF8BFBCAA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{762423D8-497A-44FD-B94E-CA963B8D3EFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762423D8-497A-44FD-B94E-CA963B8D3EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762423D8-497A-44FD-B94E-CA963B8D3EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762423D8-497A-44FD-B94E-CA963B8D3EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F241BCA-F13F-4E18-9266-858EF8BFBCAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F241BCA-F13F-4E18-9266-858EF8BFBCAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F241BCA-F13F-4E18-9266-858EF8BFBCAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F241BCA-F13F-4E18-9266-858EF8BFBCAA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1432AA0D-4D64-48A4-B001-BBF5C0BEF691}
+	EndGlobalSection
+EndGlobal

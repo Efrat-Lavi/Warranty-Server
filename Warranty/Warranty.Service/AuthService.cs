@@ -8,13 +8,16 @@ using Warranty.Core.Interfaces.Services;
 using Warranty.Core.Interfaces;
 using Warranty.Core.Models;
 using Warranty.Core;
+using Google.Apis.Auth;
+
 using System.Data;
 using System.Threading.Tasks;
+
 namespace Warranty.Service
 {
     public class AuthService(IConfiguration _configuration, IRepositoryManager _repositoryManager) : IAuthService
     {
-       
+
         public string GenerateJwtToken(UserModel user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -44,7 +47,7 @@ namespace Warranty.Service
         public async Task<UserModel> ValidateUser(string email, string password)
         {
             UserModel user = await _repositoryManager.userRepository.GetUserByEmail(email);
-        
+
             if (user != null && BCrypt.Net.BCrypt.Verify(password, user.HashPassword))
             {
                 return user;
@@ -66,7 +69,7 @@ namespace Warranty.Service
                     NameUser = user.NameUser,
                     Email = user.Email,
                     Role = user.Role,
-                    IsAccessEmails=user.IsAccessEmails
+                    IsAccessEmails = user.IsAccessEmails
                 };
                 var response = new LoginResponseDto
                 {
@@ -90,7 +93,7 @@ namespace Warranty.Service
                 Email = registerDto.Email,
                 HashPassword = hashedPassword,
                 Role = role,
-                IsAccessEmails=true
+                IsAccessEmails = true
             };
 
             if (await _repositoryManager.userRepository.GetUserByEmail(user.Email) != null)
@@ -107,5 +110,59 @@ namespace Warranty.Service
             await _repositoryManager.Save();
             return Result<bool>.Success(true);
         }
+
+        public async Task<Result<LoginResponseDto>> LoginWithGoogleAsync(string googleToken)
+        {
+            try
+            {
+                var payload = await GoogleJsonWebSignature.ValidateAsync(googleToken);
+                var email = payload.Email;
+                var name = payload.Name;
+
+                var user = await _repositoryManager.userRepository.GetUserByEmail(email);
+
+                if (user == null)
+                {
+                    var role = await _repositoryManager.roleRepository.GetRoleByName("User");
+                    if (role == null)
+                        return Result<LoginResponseDto>.Failure("Default role not found.");
+
+                    user = new UserModel
+                    {
+                        Email = email,
+                        NameUser = name,
+                        Role = role,
+                        HashPassword = "", // או GUID אם שדה חובה
+                        IsAccessEmails = true
+                    };
+
+                    await _repositoryManager.userRepository.Add(user);
+                    await _repositoryManager.Save();
+                }
+
+                var token = GenerateJwtToken(user);
+                var userDto = new UserDto
+                {
+                    Id = user.Id,
+                    NameUser = user.NameUser,
+                    Email = user.Email,
+                    Role = user.Role,
+                    IsAccessEmails = user.IsAccessEmails
+                };
+
+                return Result<LoginResponseDto>.Success(new LoginResponseDto
+                {
+                    Token = token,
+                    User = userDto
+                });
+            }
+            catch (Exception ex)
+            {
+                return Result<LoginResponseDto>.Failure("Google token validation failed: " + ex.Message);
+            }
+        }
+
+
     }
+
 }

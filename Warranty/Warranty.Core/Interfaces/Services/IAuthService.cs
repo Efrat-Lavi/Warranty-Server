@@ -14,5 +14,9 @@ namespace Warranty.Core.Interfaces.Services
         Task<UserModel> ValidateUser(string email, string password);
         Task<Result<LoginResponseDto>> Login(string email, string password);
         Task<Result<bool>> Register(RegisterDto registerDto);
+        //Task<Result<string>> LoginWithGoogleAsync(string googleToken);
+        Task<Result<LoginResponseDto>> LoginWithGoogleAsync(string googleToken);
+
+
     }
 }
