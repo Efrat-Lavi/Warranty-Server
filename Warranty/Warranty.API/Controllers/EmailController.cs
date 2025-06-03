@@ -16,20 +16,36 @@ namespace Warranty.API.Controllers
             _emailService = emailService;
         }
 
+        //[HttpPost("send")]
+        //public async Task<IActionResult> SendEmail([FromBody] EmailRequest request)
+        //{
+        //    if (request == null || string.IsNullOrWhiteSpace(request.To) || string.IsNullOrWhiteSpace(request.Subject) || string.IsNullOrWhiteSpace(request.Body))
+        //    {
+        //        return BadRequest("Invalid email request.");
+        //    }
+
+        //    bool isSent = await _emailService.SendEmailAsync(request);
+
+        //    if (isSent)
+        //        return Ok("Email sent successfully.");
+        //    else
+        //        return StatusCode(500, "Failed to send email.");
+        //}
         [HttpPost("send")]
         public async Task<IActionResult> SendEmail([FromBody] EmailRequest request)
         {
             if (request == null || string.IsNullOrWhiteSpace(request.To) || string.IsNullOrWhiteSpace(request.Subject) || string.IsNullOrWhiteSpace(request.Body))
             {
-                return BadRequest("Invalid email request.");
+                return BadRequest(new { message = "Invalid email request." });
             }
 
             bool isSent = await _emailService.SendEmailAsync(request);
 
             if (isSent)
-                return Ok("Email sent successfully.");
+                return Ok(new { message = "Email sent successfully." });
             else
-                return StatusCode(500, "Failed to send email.");
+                return StatusCode(500, new { message = "Failed to send email." });
         }
+
     }
 }
