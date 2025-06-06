@@ -39,12 +39,12 @@ public class WarrantyExpirationJob : BackgroundService
                     var user = record.User;
                     if (user != null && user.IsAccessEmails)
                     {
-             
+
                         string emailBody = $@"
 <p>Hello {user.NameUser},</p>
 <p>The warranty for <strong style='font-size: 18px; color: #2E8B57;'>{record.Warranty.NameProduct}</strong> is about to expire on <strong>{record.Warranty.ExpirationDate:dd/MM/yyyy}</strong>.</p>
 <p>To extend the warranty, please click the button below:</p>
-<a href='https://your-site.com/extend-warranty/{record.Warranty.Id}' 
+<a href='https://keepit-client-users.onrender.com/record/{record.Warranty.Id}' 
    style='display: inline-block; background-color: #10a37f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 12px; font-weight: bold; text-align: center;'>
     Extend Warranty
 </a>";
